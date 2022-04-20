@@ -2,12 +2,9 @@ import styled from 'styled-components';
 
 export const InputWrapper = styled.div`
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     flex-direction: row;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 15px;
-    padding-bottom: 15px;
+    margin: 50px;
 `;
 
 export const ButtonWrapper = styled.div`

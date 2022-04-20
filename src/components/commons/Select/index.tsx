@@ -23,7 +23,7 @@ export default function BasicSelect(props: {
 
     return (
         <Box>
-            <FormControl fullWidth sx={{ width: '100%' }}>
+            <FormControl fullWidth sx={{ minWidth: 200, width: 'auto' }}>
                 <InputLabel id="demo-simple-select-label">{label}</InputLabel>
                 <Select
                     labelId="demo-simple-select-label"
@@ -32,8 +32,10 @@ export default function BasicSelect(props: {
                     label={label}
                     onChange={handleChange}
                 >
-                    {options.map((item) => (
-                        <MenuItem value={item.value}>{item.label}</MenuItem>
+                    {options.map((item, index) => (
+                        <MenuItem key={index} value={item.value}>
+                            {item.label}
+                        </MenuItem>
                     ))}
                 </Select>
             </FormControl>

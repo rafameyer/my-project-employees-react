@@ -2,6 +2,9 @@ import * as React from 'react';
 import { TextField, Button, Modal, Box } from '@mui/material';
 import { ButtonWrapperLeft, InputWrapper } from './Styles';
 import Select from '../commons/Select';
+import RadioGroup from '../commons/RadioGroup';
+import DatePicker from '../commons/DatePicker';
+import { EmployeeRow } from './Types';
 
 const style = {
     position: 'absolute' as const,
@@ -16,14 +19,38 @@ const style = {
     p: 4,
 };
 
-export default function BasicModal(props: { open: boolean; handleClose: () => void }) {
-    const { open, handleClose } = props;
+export default function BasicModal(props: {
+    open: boolean;
+    handleClose: () => void;
+    save: (item: EmployeeRow) => void;
+    remove: () => void;
+}) {
+    const { open, handleClose, remove, save } = props;
     const [platoon, setPlatoon] = React.useState('');
     const platoons = [
-        { label: '1', value: '1' },
-        { label: '2', value: '2' },
-        { label: '3', value: '3' },
+        { label: 'Alchemists', value: 'Alchemists' },
+        { label: 'Spartans', value: 'Spartans' },
+        { label: 'BigBang', value: 'BigBang' },
     ];
+    const roles = [
+        { label: 'none selected', value: 'none' },
+        { label: 'JE', value: 'JE' },
+        { label: 'PE', value: 'PE' },
+        { label: 'SE', value: 'SE' },
+        { label: 'TM', value: 'TM' },
+    ];
+
+    const handleAdd = () => {
+        const employee: EmployeeRow = {
+            name: '1',
+            date: '2',
+            role: '3',
+            platoon: '4',
+            type: '5',
+        };
+        save(employee);
+    };
+
     return (
         <div>
             <Modal
@@ -35,23 +62,18 @@ export default function BasicModal(props: { open: boolean; handleClose: () => vo
                 <Box sx={style}>
                     <h3>Add Employee</h3>
                     <InputWrapper>
-                        <TextField id="outlined-basic" label="Name: " variant="outlined" fullWidth />
+                        <TextField id="outlined-basic" label="Name: " variant="outlined" />
+                        <DatePicker />
                     </InputWrapper>
                     <InputWrapper>
-                        <TextField id="outlined-basic" label="Start Date: " variant="outlined" fullWidth />
-                    </InputWrapper>
-                    <InputWrapper>
-                        <TextField id="outlined-basic" label="Role: " variant="outlined" fullWidth />
-                    </InputWrapper>
-                    <InputWrapper>
+                        <RadioGroup label="Role" options={roles} />
                         <Select label="Platoon" inputValue={platoon} setValue={setPlatoon} options={platoons} />
                     </InputWrapper>
-
                     <ButtonWrapperLeft>
                         <Button variant="outlined" onClick={handleClose} style={{ marginLeft: 5 }}>
                             Cancel
                         </Button>
-                        <Button variant="outlined" style={{ marginLeft: 5 }}>
+                        <Button variant="outlined" style={{ marginLeft: 5 }} onClick={handleAdd}>
                             Save
                         </Button>
                     </ButtonWrapperLeft>
