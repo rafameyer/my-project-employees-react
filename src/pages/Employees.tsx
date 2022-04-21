@@ -43,10 +43,16 @@ const Employees = () => {
     };
 
     const remove = (employee: EmployeeRow) => {
-        debugger;
         const newArray = [...employees];
         const index = employees.findIndex((el) => el.name === employee.name);
         newArray.splice(index, 1);
+        setEmployees(newArray);
+    };
+
+    const editEmployee = (employee: EmployeeRow) => {
+        const newArray = [...employees];
+        const index = employees.findIndex((el) => el.name === employee.name);
+        newArray[index] = employee;
         setEmployees(newArray);
     };
 
@@ -57,7 +63,7 @@ const Employees = () => {
                     Add new Employee
                 </Button>
             </ButtonStruct>
-            <TableList employees={employees} remove={remove} />
+            <TableList employees={employees} remove={remove} editEmployee={editEmployee} />
             <Modal open={open} handleClose={handleClose} save={addNewEmployee} />
         </div>
     );

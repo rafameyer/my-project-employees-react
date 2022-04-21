@@ -14,13 +14,20 @@ import EditModal from './Modal';
 import DeleteModal from './DeleteModal';
 import { EmployeeRow } from './Types';
 
-export default function TableList(props: { employees: EmployeeRow[]; remove: (el: EmployeeRow) => void }) {
-    const { employees, remove } = props;
+export default function TableList(props: {
+    employees: EmployeeRow[];
+    remove: (el: EmployeeRow) => void;
+    editEmployee: (employees: EmployeeRow) => void;
+}) {
+    const { employees, remove, editEmployee } = props;
 
     const [rowSelected, setRowSelected] = React.useState<EmployeeRow>();
     const [openEditModal, setOpenEditModal] = React.useState(false);
-    const handleOpenEditModal = () => setOpenEditModal(true);
     const handleCloseEditModal = () => setOpenEditModal(false);
+    const handleOpenEditModal = (employee: EmployeeRow) => {
+        setRowSelected(employee);
+        setOpenEditModal(true);
+    };
 
     const [openRemoveModal, setOpenRemoveModal] = React.useState(false);
     const handleOpenRemoveModal = (employee: EmployeeRow) => {
@@ -29,8 +36,8 @@ export default function TableList(props: { employees: EmployeeRow[]; remove: (el
     };
     const handleCloseRemoveModal = () => setOpenRemoveModal(false);
 
-    const editEmployee = (employee: EmployeeRow) => {
-        //
+    const handleEditEmployee = (employee: EmployeeRow) => {
+        editEmployee(employee);
     };
 
     return (
@@ -65,7 +72,7 @@ export default function TableList(props: { employees: EmployeeRow[]; remove: (el
                                             <Button
                                                 variant="outlined"
                                                 startIcon={<EditIcon />}
-                                                onClick={handleOpenEditModal}
+                                                onClick={() => handleOpenEditModal(row)}
                                             >
                                                 Edit
                                             </Button>
@@ -96,7 +103,7 @@ export default function TableList(props: { employees: EmployeeRow[]; remove: (el
                 employee={rowSelected as EmployeeRow}
                 open={openEditModal}
                 handleClose={handleCloseEditModal}
-                save={editEmployee}
+                save={handleEditEmployee}
             />
         </>
     );

@@ -45,16 +45,17 @@ export default function BasicModal(props: {
         { label: 'TM', value: 'TM' },
     ];
 
-    const handleAdd = () => {
+    const handleSave = () => {
         const employee: EmployeeRow = {
             id: nanoid(),
-            name: '1',
-            date: '2',
-            role: '3',
-            platoon: '4',
-            type: '5',
+            name,
+            date: String(date?.toLocaleDateString()),
+            role,
+            platoon,
+            type: 'Projects',
         };
         save(employee);
+        handleClose();
     };
 
     const handleOnChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,40 +67,49 @@ export default function BasicModal(props: {
         setDate(newValue);
     };
 
+    const handleChangeRole = (value: string) => {
+        setRole(value);
+    };
+
+    React.useEffect(() => {
+        setName(employee?.name ?? name);
+        setRole(employee?.role ?? role);
+        setDate(new Date(employee?.date as string) ?? date);
+        setPlatoon(employee?.platoon ?? platoon);
+    }, [employee]);
+
     return (
-        <div>
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box sx={style}>
-                    <h3>Add Employee</h3>
-                    <InputWrapper>
-                        <TextField
-                            id="outlined-basic"
-                            label="Name: "
-                            variant="outlined"
-                            value={name}
-                            onChange={handleOnChangeName}
-                        />
-                        <DatePicker value={date} handleChange={(value) => handleChangeDate(value)} />
-                    </InputWrapper>
-                    <InputWrapper>
-                        <RadioGroup label="Role" options={roles} />
-                        <Select label="Platoon" inputValue={platoon} setValue={setPlatoon} options={platoons} />
-                    </InputWrapper>
-                    <ButtonWrapperLeft>
-                        <Button variant="outlined" onClick={handleClose} style={{ marginLeft: 5 }}>
-                            Cancel
-                        </Button>
-                        <Button variant="outlined" style={{ marginLeft: 5 }} onClick={handleAdd}>
-                            Save
-                        </Button>
-                    </ButtonWrapperLeft>
-                </Box>
-            </Modal>
-        </div>
+        <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+        >
+            <Box sx={style}>
+                <h3>Add Employee</h3>
+                <InputWrapper>
+                    <TextField
+                        id="outlined-basic"
+                        label="Name: "
+                        variant="outlined"
+                        value={name}
+                        onChange={handleOnChangeName}
+                    />
+                    <DatePicker value={date} handleChange={(value) => handleChangeDate(value)} />
+                </InputWrapper>
+                <InputWrapper>
+                    <RadioGroup label="Role" value={role} handleChange={handleChangeRole} options={roles} />
+                    <Select label="Platoon" inputValue={platoon} setValue={setPlatoon} options={platoons} />
+                </InputWrapper>
+                <ButtonWrapperLeft>
+                    <Button variant="outlined" style={{ marginLeft: 5 }} onClick={handleClose}>
+                        Cancel
+                    </Button>
+                    <Button variant="outlined" style={{ marginLeft: 5 }} onClick={handleSave}>
+                        Save
+                    </Button>
+                </ButtonWrapperLeft>
+            </Box>
+        </Modal>
     );
 }
