@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Button, Modal, Box } from '@mui/material';
 import { ButtonWrapperLeft } from './Styles';
+import { EmployeeRow } from './Types';
 
 const style = {
     position: 'absolute' as const,
@@ -15,8 +16,19 @@ const style = {
     p: 4,
 };
 
-export default function BasicModal(props: { open: boolean; handleClose: () => void }) {
-    const { open, handleClose } = props;
+export default function DeleteModal(props: {
+    open: boolean;
+    employee: EmployeeRow;
+    handleClose: () => void;
+    remove: (el: EmployeeRow) => void;
+}) {
+    const { open, handleClose, remove, employee } = props;
+
+    const handleRemove = () => {
+        handleClose();
+        remove(employee);
+    };
+
     return (
         <div>
             <Modal
@@ -32,7 +44,7 @@ export default function BasicModal(props: { open: boolean; handleClose: () => vo
                         <Button variant="outlined" onClick={handleClose} style={{ marginLeft: 5 }}>
                             Cancel
                         </Button>
-                        <Button variant="outlined" style={{ marginLeft: 5 }}>
+                        <Button variant="outlined" style={{ marginLeft: 5 }} onClick={handleRemove}>
                             Deletar
                         </Button>
                     </ButtonWrapperLeft>

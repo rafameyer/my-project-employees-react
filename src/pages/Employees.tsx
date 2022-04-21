@@ -13,7 +13,15 @@ const Employees = () => {
     const handleClose = () => setOpen(false);
 
     React.useEffect(() => {
-        const createData = (name: string, date: string, role: string, platoon: string, type: string): EmployeeRow => ({
+        const createData = (
+            id: string,
+            name: string,
+            date: string,
+            role: string,
+            platoon: string,
+            type: string
+        ): EmployeeRow => ({
+            id,
             name,
             date,
             role,
@@ -22,9 +30,9 @@ const Employees = () => {
         });
 
         const rows = [
-            createData('Giacomo Guilizzani', '28-02-2010', 'SE', 'Alchemists', 'Projects'),
-            createData('Marco Botton', '31-12-1999', 'TM', 'Spartans', 'Projects'),
-            createData('Mariah Maclachlan', '25-09-2107', 'JE', 'BigBang', 'Projects'),
+            createData('1', 'Giacomo Guilizzani', '28-02-2010', 'SE', 'Alchemists', 'Projects'),
+            createData('2', 'Marco Botton', '31-12-1999', 'TM', 'Spartans', 'Projects'),
+            createData('3', 'Mariah Maclachlan', '25-09-2107', 'JE', 'BigBang', 'Projects'),
         ];
 
         setEmployees(rows);
@@ -34,7 +42,13 @@ const Employees = () => {
         employees.push(employee);
     };
 
-    const remove = () => {};
+    const remove = (employee: EmployeeRow) => {
+        debugger;
+        const newArray = [...employees];
+        const index = employees.findIndex((el) => el.name === employee.name);
+        newArray.splice(index, 1);
+        setEmployees(newArray);
+    };
 
     return (
         <div>
@@ -43,8 +57,8 @@ const Employees = () => {
                     Add new Employee
                 </Button>
             </ButtonStruct>
-            <TableList employees={employees} />
-            <Modal open={open} handleClose={handleClose} save={addNewEmployee} remove={remove} />
+            <TableList employees={employees} remove={remove} />
+            <Modal open={open} handleClose={handleClose} save={addNewEmployee} />
         </div>
     );
 };

@@ -5,13 +5,8 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 
-export default function MaterialUIPickers() {
-    const [value, setValue] = React.useState<Date | null>(new Date(''));
-
-    const handleChange = (newValue: Date | null) => {
-        setValue(newValue);
-    };
-
+export default function MaterialUIPickers(props: { value: Date | null; handleChange: (value: Date | null) => void }) {
+    const { value, handleChange } = props;
     return (
         <LocalizationProvider dateAdapter={AdapterDateFns}>
             <Stack spacing={3}>
@@ -19,7 +14,7 @@ export default function MaterialUIPickers() {
                     label="Start Date"
                     inputFormat="MM/dd/yyyy"
                     value={value}
-                    onChange={handleChange}
+                    onChange={(value: Date | null) => handleChange(value)}
                     renderInput={(params) => <TextField {...params} />}
                 />
             </Stack>

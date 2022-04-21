@@ -10,25 +10,28 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import React from 'react';
 import { ButtonWrapper, ButtonStruct } from './Styles';
-import DeleteModal from './DeleteModal';
 import EditModal from './Modal';
+import DeleteModal from './DeleteModal';
 import { EmployeeRow } from './Types';
 
-export default function TableList(props: { employees: EmployeeRow[] }) {
-    const { employees } = props;
+export default function TableList(props: { employees: EmployeeRow[]; remove: (el: EmployeeRow) => void }) {
+    const { employees, remove } = props;
 
-    const [openDeleteModal, setOpenDeleteModal] = React.useState(false);
+    const [rowSelected, setRowSelected] = React.useState<EmployeeRow>();
     const [openEditModal, setOpenEditModal] = React.useState(false);
-    const handleOpenDeleteModal = () => setOpenDeleteModal(true);
-    const handleCloseDeleteModal = () => setOpenDeleteModal(false);
     const handleOpenEditModal = () => setOpenEditModal(true);
     const handleCloseEditModal = () => setOpenEditModal(false);
+
+    const [openRemoveModal, setOpenRemoveModal] = React.useState(false);
+    const handleOpenRemoveModal = (employee: EmployeeRow) => {
+        setRowSelected(employee);
+        setOpenRemoveModal(true);
+    };
+    const handleCloseRemoveModal = () => setOpenRemoveModal(false);
 
     const editEmployee = (employee: EmployeeRow) => {
         //
     };
-
-    const remove = () => {};
 
     return (
         <>
@@ -71,7 +74,7 @@ export default function TableList(props: { employees: EmployeeRow[] }) {
                                             <Button
                                                 variant="outlined"
                                                 startIcon={<DeleteIcon />}
-                                                onClick={handleOpenDeleteModal}
+                                                onClick={() => handleOpenRemoveModal(row)}
                                             >
                                                 Delete
                                             </Button>
@@ -83,8 +86,18 @@ export default function TableList(props: { employees: EmployeeRow[] }) {
                     </TableBody>
                 </Table>
             </TableContainer>
-            <DeleteModal open={openDeleteModal} handleClose={handleCloseDeleteModal} />
-            <EditModal open={openEditModal} handleClose={handleCloseEditModal} save={editEmployee} remove={remove} />
+            <DeleteModal
+                employee={rowSelected as EmployeeRow}
+                open={openRemoveModal}
+                handleClose={handleCloseRemoveModal}
+                remove={() => remove(rowSelected as EmployeeRow)}
+            />
+            <EditModal
+                employee={rowSelected as EmployeeRow}
+                open={openEditModal}
+                handleClose={handleCloseEditModal}
+                save={editEmployee}
+            />
         </>
     );
 }

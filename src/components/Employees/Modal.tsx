@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { TextField, Button, Modal, Box } from '@mui/material';
+import { nanoid } from 'nanoid';
 import { ButtonWrapperLeft, InputWrapper } from './Styles';
 import Select from '../commons/Select';
 import RadioGroup from '../commons/RadioGroup';
@@ -20,13 +21,17 @@ const style = {
 };
 
 export default function BasicModal(props: {
+    employee?: EmployeeRow;
     open: boolean;
     handleClose: () => void;
     save: (item: EmployeeRow) => void;
-    remove: () => void;
 }) {
-    const { open, handleClose, remove, save } = props;
+    const { open, handleClose, save, employee } = props;
+    const [name, setName] = React.useState('');
+    const [role, setRole] = React.useState('');
+    const [date, setDate] = React.useState<Date | null>(new Date(''));
     const [platoon, setPlatoon] = React.useState('');
+
     const platoons = [
         { label: 'Alchemists', value: 'Alchemists' },
         { label: 'Spartans', value: 'Spartans' },
@@ -42,6 +47,7 @@ export default function BasicModal(props: {
 
     const handleAdd = () => {
         const employee: EmployeeRow = {
+            id: nanoid(),
             name: '1',
             date: '2',
             role: '3',
@@ -49,6 +55,15 @@ export default function BasicModal(props: {
             type: '5',
         };
         save(employee);
+    };
+
+    const handleOnChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = event.target;
+        setName(value);
+    };
+
+    const handleChangeDate = (newValue: Date | null) => {
+        setDate(newValue);
     };
 
     return (
@@ -62,8 +77,14 @@ export default function BasicModal(props: {
                 <Box sx={style}>
                     <h3>Add Employee</h3>
                     <InputWrapper>
-                        <TextField id="outlined-basic" label="Name: " variant="outlined" />
-                        <DatePicker />
+                        <TextField
+                            id="outlined-basic"
+                            label="Name: "
+                            variant="outlined"
+                            value={name}
+                            onChange={handleOnChangeName}
+                        />
+                        <DatePicker value={date} handleChange={(value) => handleChangeDate(value)} />
                     </InputWrapper>
                     <InputWrapper>
                         <RadioGroup label="Role" options={roles} />
