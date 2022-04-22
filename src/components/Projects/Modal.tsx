@@ -3,19 +3,7 @@ import { TextField, Button, Modal, Box } from '@mui/material';
 import { nanoid } from 'nanoid';
 import { ButtonWrapperLeft, InputWrapper } from './Styles';
 import { ProjectRow } from './Types';
-
-const style = {
-    position: 'absolute' as const,
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: '60%',
-    bgcolor: 'background.paper',
-    border: '2px solid darkgray',
-    borderRadius: 2,
-    boxShadow: 24,
-    p: 4,
-};
+import { modalStyle } from '../../styles/Styles';
 
 export default function BasicModal(props: {
     project?: ProjectRow;
@@ -32,12 +20,12 @@ export default function BasicModal(props: {
     }, [project]);
 
     const handleSave = () => {
-        const project: ProjectRow = {
+        const newProject: ProjectRow = {
             id: nanoid(),
             name,
             type: 'Employees',
         };
-        save(project);
+        save(newProject);
         handleClose();
     };
 
@@ -53,7 +41,7 @@ export default function BasicModal(props: {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
-            <Box sx={style}>
+            <Box sx={modalStyle}>
                 <h3>Add new Project</h3>
                 <InputWrapper>
                     <TextField

@@ -6,27 +6,18 @@ import Select from '../commons/Select';
 import RadioGroup from '../commons/RadioGroup';
 import DatePicker from '../commons/DatePicker';
 import { EmployeeRow } from './Types';
+import { modalStyle } from '../../styles/Styles';
 
-const style = {
-    position: 'absolute' as const,
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: '60%',
-    bgcolor: 'background.paper',
-    border: '2px solid darkgray',
-    borderRadius: 2,
-    boxShadow: 24,
-    p: 4,
-};
-
-export default function BasicModal(props: {
+interface IProps {
     employee?: EmployeeRow;
     open: boolean;
     handleClose: () => void;
     save: (item: EmployeeRow) => void;
-}) {
+}
+
+export default function BasicModal(props: IProps) {
     const { open, handleClose, save, employee } = props;
+    // add all state in one element
     const [name, setName] = React.useState('');
     const [role, setRole] = React.useState('');
     const [date, setDate] = React.useState<Date | null>(new Date(''));
@@ -46,7 +37,7 @@ export default function BasicModal(props: {
     ];
 
     const handleSave = () => {
-        const employee: EmployeeRow = {
+        const newEmployee: EmployeeRow = {
             id: nanoid(),
             name,
             date: String(date?.toLocaleDateString()),
@@ -54,7 +45,7 @@ export default function BasicModal(props: {
             platoon,
             type: 'Projects',
         };
-        save(employee);
+        save(newEmployee);
         handleClose();
     };
 
@@ -85,7 +76,7 @@ export default function BasicModal(props: {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
-            <Box sx={style}>
+            <Box sx={modalStyle}>
                 <h3>Add Employee</h3>
                 <InputWrapper>
                     <TextField
