@@ -4,20 +4,20 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import { Button } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Paper from '@mui/material/Paper';
 import React from 'react';
-import { ButtonWrapper, ButtonStruct } from './Styles';
-import EditModal from './Modal';
-import DeleteModal from './DeleteModal';
+import { Button } from '@mui/material';
 import { EmployeeRow } from './Types';
+import { ButtonWrapper, ButtonStruct } from './Styles';
+import DeleteModal from './DeleteModal';
+import EditModal from './Modal';
 
 export default function TableList(props: {
     employees: EmployeeRow[];
     remove: (el: EmployeeRow) => void;
-    editEmployee: (employees: EmployeeRow) => void;
+    editEmployee: (employee: EmployeeRow) => void;
 }) {
     const { employees, remove, editEmployee } = props;
 

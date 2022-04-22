@@ -10,28 +10,20 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import React from 'react';
 import { ButtonWrapper, ButtonStruct } from './Styles';
 import DeleteModal from './DeleteModal';
+import { ProjectRow } from './Types';
 
-interface Data {
-    name: string;
-    type: string;
-}
-
-function createData(name: string, type: string): Data {
-    return {
-        name,
-        type,
-    };
-}
-
-const rows = [
-    createData('Giacomo Guilizzani', 'Employees'),
-    createData('Marco Botton', 'Employees'),
-    createData('Mariah Maclachlan', 'Employees'),
-];
-
-export default function TableList() {
+export default function TableList(props: {
+    projects: ProjectRow[];
+    remove: (el: ProjectRow) => void;
+    editProject: (employee: ProjectRow) => void;
+}) {
+    const { projects, remove, editProject } = props;
+    const [rowSelected, setRowSelected] = React.useState<ProjectRow>();
     const [openDeleteModal, setOpenDeleteModal] = React.useState(false);
-    const handleOpenDeleteModal = () => setOpenDeleteModal(true);
+    const handleOpenDeleteModal = (project: ProjectRow) => {
+        setRowSelected(project);
+        setOpenDeleteModal(true);
+    };
     const handleCloseDeleteModal = () => setOpenDeleteModal(false);
 
     return (
@@ -46,7 +38,7 @@ export default function TableList() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map((row) => (
+                        {projects.map((row) => (
                             <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                 <TableCell component="th" scope="row">
                                     {row.name}
@@ -58,7 +50,7 @@ export default function TableList() {
                                             <Button
                                                 variant="outlined"
                                                 startIcon={<DeleteIcon />}
-                                                onClick={handleOpenDeleteModal}
+                                                onClick={() => handleOpenDeleteModal(row)}
                                             >
                                                 Delete
                                             </Button>
@@ -70,7 +62,12 @@ export default function TableList() {
                     </TableBody>
                 </Table>
             </TableContainer>
-            <DeleteModal open={openDeleteModal} handleClose={handleCloseDeleteModal} />
+            <DeleteModal
+                open={openDeleteModal}
+                project={rowSelected as ProjectRow}
+                handleClose={handleCloseDeleteModal}
+                remove={() => remove(rowSelected as ProjectRow)}
+            />
         </>
     );
 }
